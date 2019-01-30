@@ -1,0 +1,14 @@
+schema {
+	query: Query
+}
+
+type Query {
+	allContents: [Content]
+	content(id: Long): Content
+}
+
+type Content {
+	id: Long
+	title: String
+	genre: String
+}
