@@ -1,5 +1,8 @@
 package com.lge.lcms.service;
 
+import java.io.InputStream;
+import org.apache.commons.io.IOUtils;
+import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.stream.Stream;
@@ -45,7 +48,10 @@ public class GraphQLService {
 
 		loadDataHSQL();
 
-		File schemaFile = resource.getFile();
+		InputStream inputStream = resource.getInputStream();
+		File schemaFile = File.createTempFile("p12", ".tmp");
+		IOUtils.copy(inputStream, new FileOutputStream(schemaFile));
+
 		TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(schemaFile);
 		RuntimeWiring wiring =  buildRuntimeWiring();
 		GraphQLSchema schema = new SchemaGenerator().makeExecutableSchema(typeRegistry, wiring);
