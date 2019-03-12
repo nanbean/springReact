@@ -4,8 +4,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.lge.lcms.content.Content;
-import com.lge.lcms.content.ContentRepository;
+import com.lge.lcms.model.Content;
+import com.lge.lcms.repository.ContentRepository;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;

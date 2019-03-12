@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import com.lge.lcms.content.Content;
-import com.lge.lcms.content.ContentRepository;
+import com.lge.lcms.model.Content;
+import com.lge.lcms.repository.ContentRepository;
 import com.lge.lcms.service.datafetcher.AllContentsDataFetcher;
 import com.lge.lcms.service.datafetcher.ContentDataFetcher;
 
@@ -71,13 +71,13 @@ public class GraphQLService {
 	}
 
 	private void loadDataHSQL() {
-		Stream.of(
-			new Content("Incredible", "Action"),
-			new Content("Frozen", "Fantasy"),
-			new Content("Snow White", "Romance")
-		).forEach(content ->
-			contentRepository.save(content)
-		);
+		// Stream.of(
+		// 	new Content("Incredible", "Action"),
+		// 	new Content("Frozen", "Fantasy"),
+		// 	new Content("Snow White", "Romance")
+		// ).forEach(content ->
+		// 	contentRepository.save(content)
+		// );
 	}
 
 }
