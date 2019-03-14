@@ -31,5 +31,8 @@ node_modules
 ### build ###
 frontend/build
 
+### coverage ###
+frontend/coverage
+
 ### Sisual Studio Code ###
 .vscode

@@ -1,12 +1,16 @@
 import {
 	SET_ACCESS_TOKEN,
-	SET_LOGIN_FETCHING,
-	SET_LOGIN_RESULT
+	SET_SIGNIN_FETCHING,
+	SET_SIGNIN_RESULT
 } from './actionTypes';
 
 import {
 	getCurrentUserAction
 } from './userActions';
+
+import {
+	initContentsAction
+} from './contentActions';
 
 import {
 	API_BASE_URL
@@ -16,8 +20,8 @@ import {
 	getHeaders
 } from '../util/actionUtil';
 
-export const setLoginFetchingAction = value => ({
-	type: SET_LOGIN_FETCHING,
+export const setSigninFetchingAction = value => ({
+	type: SET_SIGNIN_FETCHING,
 	payload: value
 });
 
@@ -26,33 +30,36 @@ export const setAccessTokenAction = value => ({
 	payload: value
 });
 
-const fetchLoginSuccess = body => ({
-	type: SET_LOGIN_RESULT,
+const fetchSigninSuccess = body => ({
+	type: SET_SIGNIN_RESULT,
 	payload: body
 });
 
-const fetchLoginFailure = ex => ({
-	type: SET_LOGIN_RESULT,
+const fetchSigninFailure = ex => ({
+	type: SET_SIGNIN_RESULT,
 	payload: ex
 });
 
-export const loginAction = (loginRequest) => dispatch => {
+export const signinAction = (signinRequest) => dispatch => {
 	const apiUrl = API_BASE_URL + '/auth/signin';
 
-	dispatch(setLoginFetchingAction(true));
+	dispatch(setSigninFetchingAction(true));
 	return fetch(apiUrl, {
 		method: 'POST',
 		headers: getHeaders(),
-		body: JSON.stringify(loginRequest)
+		body: JSON.stringify(signinRequest)
 	})
 		.then(res => res.json())
 		.then(body => {
-			dispatch(fetchLoginSuccess(body));
+			dispatch(fetchSigninSuccess(body));
 			dispatch(getCurrentUserAction());
 		})
-		.catch(ex => dispatch(fetchLoginFailure(ex)));
+		.catch(ex => {
+			dispatch(fetchSigninFailure(ex));
+		});
 };
 
 export const logoutAction = () => dispatch => {
 	dispatch(setAccessTokenAction(''));
+	dispatch(initContentsAction());
 };

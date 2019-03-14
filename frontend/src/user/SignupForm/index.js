@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
-import { Form, Input, Button, notification } from 'antd';
-
-import {
-	initSignupResult,
-	signupAction
-} from '../../actions/signupActions';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import PersonOutlinedIcon from '@material-ui/icons/PersonOutlined';
 
 import {
 	NAME_MIN_LENGTH, NAME_MAX_LENGTH,
@@ -17,11 +19,31 @@ import {
 	API_BASE_URL
 } from '../../constants';
 
-import './index.css';
+const styles = theme => ({
+	paper: {
+		marginTop: theme.spacing.unit * 8,
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
+		padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`
+	},
+	avatar: {
+		margin: theme.spacing.unit,
+		backgroundColor: theme.palette.secondary.main
+	},
+	form: {
+		width: '100%', // Fix IE 11 issue.
+		marginTop: theme.spacing.unit
+	},
+	submit: {
+		marginTop: theme.spacing.unit * 3
+	},
+	help: {
+		color: 'red'
+	}
+});
 
-const FormItem = Form.Item;
-
-class SignUp extends Component {
+export class SignupForm extends Component {
 	state = {
 		name: {
 			value: ''
@@ -36,25 +58,6 @@ class SignUp extends Component {
 			value: ''
 		}
 	};
-
-	componentDidMount () {
-		// initialize signup result
-		this.props.initSignupResult();
-	}
-
-	componentDidUpdate (prevProps) {
-		if (prevProps.success === false && this.props.success === true) {
-			notification.success({
-				message: 'LCMS',
-				description: 'Thank you! You\'re successfully registered. Please Login to continue!'
-			});
-		} else if (prevProps.status === null && this.props.status) {
-			notification.error({
-				message: 'LCMS',
-				description: this.props.message || 'Sorry! Something went wrong. Please try again!'
-			});
-		}
-	}
 
 	handleInputChange = (event, validationFun) => {
 		const target = event.target;
@@ -300,110 +303,104 @@ class SignUp extends Component {
 	}
 
 	render () {
-		if (this.props.success) {
-			return <Redirect push to="/login" />;
-		}
+		const { classes } = this.props;
 
 		return (
-			<div className="signup-container">
-				<h1 className="page-title">Sign Up</h1>
-				<div className="signup-content">
-					<Form onSubmit={this.handleSubmit} className="signup-form">
-						<FormItem
-							label="Full Name"
-							validateStatus={this.state.name.validateStatus}
-							help={this.state.name.errorMsg}>
-							<Input
-								size="large"
-								name="name"
-								autoComplete="off"
-								placeholder="Your full name"
-								value={this.state.name.value}
-								onChange={(event) => this.handleInputChange(event, this.validateName)} />
-						</FormItem>
-						<FormItem label="Username"
-							hasFeedback
-							validateStatus={this.state.username.validateStatus}
-							help={this.state.username.errorMsg}>
-							<Input
-								size="large"
-								name="username"
-								autoComplete="off"
-								placeholder="A unique username"
-								value={this.state.username.value}
-								onBlur={this.validateUsernameAvailability}
-								onChange={(event) => this.handleInputChange(event, this.validateUsername)} />
-						</FormItem>
-						<FormItem
-							label="Email"
-							hasFeedback
-							validateStatus={this.state.email.validateStatus}
-							help={this.state.email.errorMsg}>
-							<Input
-								size="large"
-								name="email"
-								type="email"
-								autoComplete="off"
-								placeholder="Your email"
-								value={this.state.email.value}
-								onBlur={this.validateEmailAvailability}
-								onChange={(event) => this.handleInputChange(event, this.validateEmail)} />
-						</FormItem>
-						<FormItem
-							label="Password"
-							validateStatus={this.state.password.validateStatus}
-							help={this.state.password.errorMsg}>
-							<Input
-								size="large"
-								name="password"
-								type="password"
-								autoComplete="off"
-								placeholder="A password between 6 to 20 characters"
-								value={this.state.password.value}
-								onChange={(event) => this.handleInputChange(event, this.validatePassword)} />
-						</FormItem>
-						<FormItem>
-							<Button type="primary"
-								htmlType="submit"
-								size="large"
-								className="signup-form-button"
-								disabled={this.isFormInvalid()}>Sign up</Button>
-							Already registed? <Link to="/login">Login now!</Link>
-						</FormItem>
-					</Form>
-				</div>
-			</div>
+			<Paper className={classes.paper}>
+				<Avatar className={classes.avatar}>
+					<PersonOutlinedIcon />
+				</Avatar>
+				<Typography component="h1" variant="h5">
+					Sign In
+				</Typography>
+				<form className={classes.form} onSubmit={this.handleSubmit}>
+					<FormControl margin="normal" required fullWidth>
+						<InputLabel htmlFor="name">Full Name</InputLabel>
+						<Input
+							id="name"
+							name="name"
+							autoComplete="off"
+							autoFocus
+							placeholder="Your full name"
+							value={this.state.name.value}
+							onChange={(event) => this.handleInputChange(event, this.validateName)}
+						/>
+						<FormHelperText
+							className={classes.help}
+						>
+							{this.state.name.errorMsg}
+						</FormHelperText>
+					</FormControl>
+					<FormControl margin="normal" required fullWidth>
+						<InputLabel htmlFor="id">Username</InputLabel>
+						<Input
+							id="username"
+							name="username"
+							autoComplete="off"
+							placeholder="A unique username"
+							value={this.state.username.value}
+							onBlur={this.validateUsernameAvailability}
+							onChange={(event) => this.handleInputChange(event, this.validateUsername)}
+						/>
+						<FormHelperText
+							className={classes.help}
+						>
+							{this.state.username.errorMsg}
+						</FormHelperText>
+					</FormControl>
+					<FormControl margin="normal" required fullWidth>
+						<InputLabel htmlFor="email">Email</InputLabel>
+						<Input
+							id="email"
+							name="email"
+							type="email"
+							autoComplete="off"
+							placeholder="Your email"
+							value={this.state.email.value}
+							onBlur={this.validateEmailAvailability}
+							onChange={(event) => this.handleInputChange(event, this.validateEmail)}
+						/>
+						<FormHelperText
+							className={classes.help}
+						>
+							{this.state.email.errorMsg}
+						</FormHelperText>
+					</FormControl>
+					<FormControl margin="normal" required fullWidth>
+						<InputLabel htmlFor="password">Password</InputLabel>
+						<Input
+							id="password"
+							name="password"
+							autoComplete="off"
+							placeholder="A password between 6 to 20 characters"
+							value={this.state.password.value}
+							onChange={(event) => this.handleInputChange(event, this.validatePassword)}
+						/>
+						<FormHelperText
+							className={classes.help}
+						>
+							{this.state.password.errorMsg}
+						</FormHelperText>
+					</FormControl>
+					<Button
+						type="submit"
+						fullWidth
+						variant="contained"
+						color="primary"
+						className={classes.submit}
+						disabled={this.isFormInvalid()}
+					>
+						Sign up
+					</Button>
+				</form>
+			</Paper>
 		);
 	}
 }
 
-SignUp.propTypes = {
-	history: PropTypes.shape({
-		push: PropTypes.func.isRequired
-	}).isRequired,
-	initSignupResult: PropTypes.func.isRequired,
-	message: PropTypes.string.isRequired,
-	signupAction: PropTypes.func.isRequired,
-	status: PropTypes.number.isRequired,
-	success: PropTypes.bool.isRequired
+SignupForm.propTypes = {
+	classes: PropTypes.object.isRequired,
+	signupAction: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-	message: state.signup.response.message,
-	status: state.signup.response.status,
-	success: state.signup.response.success
-});
-
-const mapDispatchToProps = dispatch => ({
-	initSignupResult () {
-		dispatch(initSignupResult());
-	},
-	signupAction (value) {
-		dispatch(signupAction(value));
-	}
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(SignUp);
+export default withStyles(styles)(SignupForm);

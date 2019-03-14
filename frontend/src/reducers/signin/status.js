@@ -4,7 +4,7 @@ const initialState = 0;
 
 export default function fetching (state = initialState, action) {
 	switch (action.type) {
-	case actions.SET_LOGIN_RESULT:
+	case actions.SET_SIGNIN_RESULT:
 		if (action.payload && action.payload.accessToken) {
 			return 200;
 		} else if (action.payload && action.payload.status) {

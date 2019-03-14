@@ -2,20 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { Form, notification } from 'antd';
 
-import LoginForm from '../LoginForm';
+import SigninForm from '../SigninForm';
 import SnackBar from '../../common/SnackBar';
 
 import {
-	loginAction
-} from '../../actions/loginoutActions';
+	signinAction
+} from '../../actions/signinoutActions';
 
 import './index.css';
 
-class Login extends Component {
+export class Signin extends Component {
 	state = {
-		open: false,
+		snackBarOpen: false,
 		message: '',
 		variant: 'success'
 	};
@@ -23,7 +22,7 @@ class Login extends Component {
 	componentDidUpdate (prevProps) {
 		if (prevProps.fetching === true && this.props.status === 401) {
 			this.setState({
-				open: true,
+				snackBarOpen: true,
 				message: 'Your Username or Password is incorrect. Please try again!',
 				variant: 'error'
 			});
@@ -31,30 +30,26 @@ class Login extends Component {
 	}
 
 	handleClose = () => {
-		this.setState({ open: false });
+		this.setState({ snackBarOpen: false });
 	}
 
 	render () {
-		const { open, message } = this.state;
-		const AntWrappedLoginForm = Form.create()(LoginForm);
+		const { message, snackBarOpen, variant } = this.state;
 
 		if (this.props.accessToken) {
-			return <Redirect to="/" />;
+			return <Redirect to="/list" />;
 		}
 
 		return (
-			<div>
-				<div className="login-container">
-					<h1 className="page-title">Login</h1>
-					<div className="login-content">
-						<AntWrappedLoginForm
-							loginAction={this.props.loginAction}
-						/>
-					</div>
+			<div className="signin-container">
+				<div className="signin-content">
+					<SigninForm
+						signinAction={this.props.signinAction}
+					/>
 				</div>
 				<SnackBar
-					open={open}
-					variant="error"
+					open={snackBarOpen}
+					variant={variant}
 					message={message}
 					onClose={this.handleClose}
 				/>
@@ -63,28 +58,30 @@ class Login extends Component {
 	}
 }
 
-Login.propTypes = {
+Signin.propTypes = {
 	accessToken: PropTypes.string.isRequired,
 	fetching: PropTypes.bool.isRequired,
-	loginAction: PropTypes.func.isRequired,
 	message: PropTypes.string.isRequired,
+	signinAction: PropTypes.func.isRequired,
 	status: PropTypes.number.isRequired
 };
 
+/* istanbul ignore next */
 const mapStateToProps = state => ({
-	accessToken: state.login.accessToken,
-	fetching: state.login.fetching,
-	status: state.login.status,
-	message: state.login.message
+	accessToken: state.signin.accessToken,
+	fetching: state.signin.fetching,
+	status: state.signin.status,
+	message: state.signin.message
 });
 
+/* istanbul ignore next */
 const mapDispatchToProps = dispatch => ({
-	loginAction (value) {
-		dispatch(loginAction(value));
+	signinAction (value) {
+		dispatch(signinAction(value));
 	}
 });
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Login);
+)(Signin);

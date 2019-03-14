@@ -1,21 +1,54 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button } from 'antd';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
-import './index.css';
+const styles = (theme) => ({
+	heroUnit: {
+		backgroundColor: theme.palette.background.paper
+	},
+	heroContent: {
+		maxWidth: 600,
+		margin: '0 auto',
+		padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`
+	},
+	link: {
+		textDecoration: 'none',
+		color: 'inherit'
+	}
+});
 
-const NotFound = () => {
+const NotFound = ({ classes }) => {
 	return (
-		<div className="page-not-found">
-			<h1 className="title">
-				404
-			</h1>
-			<div className="desc">
-				{'The Page you\'re looking for was not found.'}
+		<main>
+			<div className={classes.heroUnit}>
+				<div className={classes.heroContent}>
+					<Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+						404
+					</Typography>
+					<Typography variant="h6" align="center" color="textSecondary" paragraph>
+						{'The Page you\'re looking for was not found.'}
+					</Typography>
+					<div className={classes.heroButtons}>
+						<Grid container spacing={16} justify="center">
+							<Grid item>
+								<Link to="/" className={classes.link}>
+									<Button variant="contained" color="secondary">Go Back</Button>
+								</Link>
+							</Grid>
+						</Grid>
+					</div>
+				</div>
 			</div>
-			<Link to="/"><Button className="go-back-btn" type="primary" size="large">Go Back</Button></Link>
-		</div>
+		</main>
 	);
 };
 
-export default NotFound;
+NotFound.propTypes = {
+	classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(NotFound);

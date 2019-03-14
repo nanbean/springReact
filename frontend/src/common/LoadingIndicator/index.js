@@ -1,14 +1,22 @@
 import React from 'react';
-import {
-	Spin,
-	Icon
-} from 'antd';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-const LoadingIndicator = () => {
-	const antIcon = <Icon type="loading-3-quarters" style={{ fontSize: 30 }} spin />;
+const styles = theme => ({
+	progress: {
+		margin: theme.spacing.unit * 2
+	}
+});
+
+const LoadingIndicator = ({ classes }) => {
 	return (
-		<Spin indicator={antIcon} style={{ display: 'block', textAlign: 'center', marginTop: 30 }} />
+		<CircularProgress className={classes.progress} />
 	);
 };
 
-export default LoadingIndicator;
+LoadingIndicator.propTypes = {
+	classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(LoadingIndicator);

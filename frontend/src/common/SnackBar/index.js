@@ -92,6 +92,7 @@ function SnackBar (props) {
 
 SnackBar.propTypes = {
 	classes: PropTypes.object.isRequired,
+	className: PropTypes.string.isRequired,
 	message: PropTypes.string.isRequired,
 	onClose: PropTypes.func.isRequired,
 	open: PropTypes.bool.isRequired,

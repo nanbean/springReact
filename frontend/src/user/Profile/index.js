@@ -1,31 +1,46 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Avatar } from 'antd';
-import { getAvatarColor } from '../../util/Colors';
+import { connect } from 'react-redux';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
 
-import './index.css';
+const styles = (theme) => ({
+	heroUnit: {
+		backgroundColor: theme.palette.background.paper
+	},
+	heroContent: {
+		maxWidth: 600,
+		margin: '0 auto',
+		padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`
+	},
+	avatar: {
+		margin: 10,
+		width: 100,
+		height: 100,
+		fontSize: '3rem'
+	}
+});
 
 class Profile extends Component {
 	render () {
-		const { currentUser } = this.props;
+		const { classes, name } = this.props;
 
 		return (
-			<div className="profile">
+			<div>
 				{
-					currentUser.name ? (
-						<div className="user-profile">
-							<div className="user-details">
-								<div className="user-avatar">
-									<Avatar className="user-avatar-circle" style={{ backgroundColor: getAvatarColor(currentUser.name) }}>
-										{currentUser.name[0].toUpperCase()}
-									</Avatar>
-								</div>
-								<div className="user-summary">
-									<div className="full-name">{currentUser.name}</div>
-									<div className="username">{currentUser.username}</div>
+					name ? (
+						<main>
+							<div className={classes.heroUnit}>
+								<div className={classes.heroContent}>
+									<Grid container justify="center" alignItems="center">
+										<Avatar className={classes.avatar}>{name[0].toUpperCase()}</Avatar>
+										<Typography variant="h4" gutterBottom>{name}</Typography>
+									</Grid>
 								</div>
 							</div>
-						</div>
+						</main>
 					) : null
 				}
 			</div>
@@ -34,13 +49,17 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
-	currentUser: PropTypes.shape({
-		name: PropTypes.string.isRequired,
-		username: PropTypes.string.isRequired
-	}).isRequired,
+	classes: PropTypes.object.isRequired,
 	match: PropTypes.shape({
 		params: PropTypes.object.isRequired
-	}).isRequired
+	}).isRequired,
+	name: PropTypes.string.isRequired
 };
 
-export default Profile;
+const mapStateToProps = state => ({
+	name: state.currentUser.name
+});
+
+export default connect(
+	mapStateToProps
+)(withStyles(styles)(Profile));

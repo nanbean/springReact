@@ -207,10 +207,10 @@
         },
         "divider": "rgba(0, 0, 0, 0.12)",
         "secondary": {
-            "main": "#f50057",
-            "light": "rgb(247, 51, 120)",
-            "dark": "rgb(171, 0, 60)",
-            "contrastText": "#FAFAFA"
+            "main": "#6b6b6b",
+            "light": "rgb(136, 136, 136)",
+            "dark": "rgb(74, 74, 74)",
+            "contrastText": "#fff"
         },
         "common": {
             "black": "#000",
@@ -232,11 +232,11 @@
             "active": "rgba(0, 0, 0, 0.54)"
         },
         "primary": {
-            "main": "#2196f3",
-            "light": "rgb(77, 171, 245)",
-            "dark": "rgb(23, 105, 170)",
-            "contrastText": "#FAFAFA"
+            "main": "#A50034",
+            "light": "rgb(183, 51, 92)",
+            "dark": "rgb(115, 0, 36)",
+            "contrastText": "#fff"
         }
     },
-    "themeName": "Dodger Blue Razzmatazz Echidna"
+    "themeName": "Burgundy Dove Gray Horses"
 }

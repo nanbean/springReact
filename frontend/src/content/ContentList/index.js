@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
-import { Button, Icon } from 'antd';
+import classNames from 'classnames';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 import Content from '../Content';
 import LoadingIndicator from '../../common/LoadingIndicator';
@@ -14,7 +18,24 @@ import {
 
 import { CONTENT_LIST_SIZE } from '../../constants';
 
-import './index.css';
+const styles = theme => ({
+	root: {
+		flexGrow: 1
+	},
+	layout: {
+		width: 'auto',
+		marginLeft: theme.spacing.unit * 3,
+		marginRight: theme.spacing.unit * 3,
+		[theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
+			width: 1100,
+			marginLeft: 'auto',
+			marginRight: 'auto'
+		}
+	},
+	cardGrid: {
+		padding: `${theme.spacing.unit * 8}px 0`
+	}
+});
 
 class ContentList extends Component {
 	componentDidMount () {
@@ -42,47 +63,49 @@ class ContentList extends Component {
 
 	render () {
 		const {
+			classes,
 			contents,
 			fetching,
 			last
 		} = this.props;
 
 		return (
-			<div className="contents-container">
-				{
-					contents.length > 0 && contents.map(i => {
-						return <Content
-							key={i.id}
-							description={i.description}
-							genre={i.genre}
-							title={i.title} />;
-					})
-				}
-				{
-					!fetching && contents.length === 0 ? (
-						<div className="no-contents-found">
-							<span>No Contents Found.</span>
-						</div>
-					) : null
-				}
-				{
-					!fetching && !last ? (
-						<div className="load-more-contents">
-							<Button type="dashed" onClick={this.handleLoadMore} disabled={fetching}>
-								<Icon type="plus" /> Load more
-							</Button>
-						</div>) : null
-				}
-				{
-					fetching ?
-						<LoadingIndicator /> : null
-				}
-			</div>
+			<div className={classNames(classes.layout, classes.cardGrid)}>
+				<Grid container spacing={40}>
+					{
+						contents.length > 0 && contents.map(i => {
+							return <Content
+								key={i.id}
+								description={i.description}
+								genre={i.genre}
+								title={i.title} />;
+						})
+					}
+					{
+						!fetching && contents.length === 0 ? (
+							<Paper elevation={1}>
+								<span>No Contents Found.</span>
+							</Paper>
+						) : null
+					}
+					{
+						!fetching && !last ? (
+							<div className="load-more-contents">
+								<Button size="small" type="dashed" onClick={this.handleLoadMore}>Load more</Button>
+							</div>) : null
+					}
+					{
+						fetching ?
+							<LoadingIndicator /> : null
+					}
+				</Grid>
+			</div >
 		);
 	}
 }
 
 ContentList.propTypes = {
+	classes: PropTypes.object.isRequired,
 	contents: PropTypes.array.isRequired,
 	fetching: PropTypes.bool.isRequired,
 	getAllContentsAction: PropTypes.func.isRequired,
@@ -116,4 +139,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withRouter(ContentList));
+)(withRouter(withStyles(styles)(ContentList)));

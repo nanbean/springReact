@@ -36,7 +36,7 @@ export const getCurrentUserAction = () => (dispatch, getState) => {
 	const apiUrl = API_BASE_URL + '/user/me';
 
 	if (!state.accessToken) {
-		dispatch(fetchGetCurrentUserActionFailure);
+		dispatch(fetchGetCurrentUserActionFailure({}));
 	}
 
 	return fetch(apiUrl, {

@@ -16,7 +16,7 @@ export default function accessToken (state = initialState, action) {
 		} else {
 			return state;
 		}
-	case actions.SET_LOGIN_RESULT:
+	case actions.SET_SIGNIN_RESULT:
 		if (action.payload.accessToken) {
 			localStorage.setItem(ACCESS_TOKEN, action.payload.accessToken);
 			return action.payload.accessToken;

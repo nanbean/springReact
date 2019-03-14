@@ -14,7 +14,14 @@ import {
 	getHeaders
 } from '../util/actionUtil';
 
-export const setContentFetchingAction = value => ({
+export const initContentsAction = () => ({
+	type: SET_CONTENTS,
+	payload: {
+		content: []
+	}
+});
+
+const setContentFetchingAction = value => ({
 	type: SET_CONTENTS_FETCHING,
 	payload: value
 });

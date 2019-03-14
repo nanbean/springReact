@@ -4,7 +4,7 @@ const initialState = '';
 
 export default function message (state = initialState, action) {
 	switch (action.type) {
-	case actions.SET_LOGIN_RESULT:
+	case actions.SET_SIGNIN_RESULT:
 		if (action.payload && action.payload.accessToken) {
 			return initialState;
 		} else if (action.payload && action.payload.message) {
