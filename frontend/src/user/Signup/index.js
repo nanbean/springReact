@@ -11,8 +11,6 @@ import {
 	signupAction
 } from '../../actions/signupActions';
 
-import './index.css';
-
 export class Signup extends Component {
 	state = {
 		snackBarOpen: false,
@@ -59,12 +57,10 @@ export class Signup extends Component {
 		}
 
 		return (
-			<div className="signup-container">
-				<div className="signup-content">
-					<SignupForm
-						signupAction={this.props.signupAction}
-					/>
-				</div>
+			<div id="signup-container">
+				<SignupForm
+					signupAction={this.props.signupAction}
+				/>
 				<SnackBar
 					open={snackBarOpen}
 					variant={variant}

@@ -23,21 +23,16 @@ export const setCurrentUserAction = value => ({
 
 const fetchGetCurrentUserActionSuccess = body => ({
 	type: SET_CURRENT_USER,
-	payload: body
+	body
 });
 
 const fetchGetCurrentUserActionFailure = ex => ({
 	type: SET_CURRENT_USER,
-	payload: ex
+	ex
 });
 
-export const getCurrentUserAction = () => (dispatch, getState) => {
-	const state = getState();
+export const getCurrentUserAction = () => dispatch => {
 	const apiUrl = API_BASE_URL + '/user/me';
-
-	if (!state.accessToken) {
-		dispatch(fetchGetCurrentUserActionFailure({}));
-	}
 
 	return fetch(apiUrl, {
 		method: 'GET',

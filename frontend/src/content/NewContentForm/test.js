@@ -2,16 +2,16 @@ import React from 'react';
 import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import { SignupForm } from './index';
+import { NewContentForm } from './index';
 
 configure({ adapter: new Adapter() });
 
-describe('SigninForm Test Cases', () => {
-	const signupAction = jest.fn();
+describe('NewContentForm Test Cases', () => {
+	const createContentAction = jest.fn();
 	const component = mount(
-		<SignupForm
+		<NewContentForm
 			classes={{}}
-			signupAction={signupAction}
+			createContentAction={createContentAction}
 		/>
 	);
 
@@ -20,20 +20,18 @@ describe('SigninForm Test Cases', () => {
 	});
 
 	it('update state when user input', () => {
-		component.find('input').at(0).simulate('change', { target: { name: 'name', value: 'name' } });
-		component.find('input').at(1).simulate('change', { target: { name: 'username', value: 'username' } });
-		component.find('input').at(2).simulate('change', { target: { name: 'email', value: 'email@email.com' } });
-		component.find('input').at(3).simulate('change', { target: { name: 'password', value: 'password' } });
-		expect(component.state('name').value).toBe('name');
-		expect(component.state('username').value).toBe('username');
-		expect(component.state('email').value).toBe('email@email.com');
-		expect(component.state('password').value).toBe('password');
+		component.find('input').at(0).simulate('change', { target: { name: 'title', value: 'title' } });
+		component.find('textarea').filter({ id: 'description' }).simulate('change', { target: { name: 'description', value: 'description' } });
+		component.find('input').at(1).simulate('change', { target: { name: 'genre', value: 'genre' } });
+		expect(component.state('title').text).toBe('title');
+		expect(component.state('description').text).toBe('description');
+		expect(component.state('genre').text).toBe('genre');
 	});
 
 	// TODO add more test cases about abnormal input
 
-	it('call signinAction when form submit', () => {
+	it('call createContentAction when form submit', () => {
 		component.find('form').simulate('submit');
-		expect(signupAction).toHaveBeenCalled();
+		expect(createContentAction).toHaveBeenCalled();
 	});
 });

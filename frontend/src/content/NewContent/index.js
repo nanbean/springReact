@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -7,7 +8,13 @@ import NewContentForm from '../NewContentForm';
 
 import { createContentAction } from '../../actions/contentActions';
 
-import './index.css';
+const styles = {
+	root: {
+		maxWidth: 520,
+		margin: '0 auto',
+		marginTop: 40
+	}
+};
 
 class NewContent extends Component {
 	state = {
@@ -30,11 +37,13 @@ class NewContent extends Component {
 	}
 
 	render () {
+		const { classes } = this.props;
+
 		if (this.state.redirect) {
 			return <Redirect push to="/" />;
 		}
 		return (
-			<div className="new-content-container">
+			<div className={classes.root}>
 				<div className="new-content-content">
 					<NewContentForm
 						createContentAction={this.props.createContentAction}
@@ -46,6 +55,7 @@ class NewContent extends Component {
 }
 
 NewContent.propTypes = {
+	classes: PropTypes.object.isRequired,
 	createContentAction: PropTypes.func.isRequired,
 	error: PropTypes.object.isRequired,
 	fetching: PropTypes.bool.isRequired
@@ -65,4 +75,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(NewContent);
+)(withStyles(styles)(NewContent));

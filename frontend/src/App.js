@@ -19,8 +19,12 @@ import './App.css';
 
 class App extends Component {
 	componentDidMount () {
+		const { accessToken } = this.props;
+
 		this.props.rehydrateAction();
-		this.props.getCurrentUserAction();
+		if (accessToken) {
+			this.props.getCurrentUserAction();
+		}
 	}
 
 	render () {
@@ -43,7 +47,7 @@ App.propTypes = {
 	accessToken: PropTypes.string.isRequired,
 	getCurrentUserAction: PropTypes.func.isRequired,
 	rehydrateAction: PropTypes.func.isRequired,
-	username: PropTypes.object.isRequired
+	username: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({

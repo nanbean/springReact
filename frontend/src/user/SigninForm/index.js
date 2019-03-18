@@ -13,6 +13,11 @@ import Paper from '@material-ui/core/Paper';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 const styles = theme => ({
+	root: {
+		maxWidth: 520,
+		margin: '0 auto',
+		marginTop: 40
+	},
 	paper: {
 		marginTop: theme.spacing.unit * 8,
 		display: 'flex',
@@ -60,52 +65,54 @@ export class SigninForm extends Component {
 		const { classes } = this.props;
 
 		return (
-			<Paper className={classes.paper}>
-				<Avatar className={classes.avatar}>
-					<LockOutlinedIcon />
-				</Avatar>
-				<Typography component="h1" variant="h5">
-					Sign In
-				</Typography>
-				<form className={classes.form} onSubmit={this.handleSubmit}>
-					<FormControl margin="normal" required fullWidth>
-						<InputLabel htmlFor="email">Username or Email</InputLabel>
-						<Input
-							id="usernameOrEmail"
-							name="usernameOrEmail"
-							autoComplete="signin email"
-							autoFocus
-							value={this.state.usernameOrEmail}
-							onChange={this.handleUsernameOrEmailChange}
+			<div className={classes.root}>
+				<Paper className={classes.paper}>
+					<Avatar className={classes.avatar}>
+						<LockOutlinedIcon />
+					</Avatar>
+					<Typography component="h1" variant="h5">
+						Sign In
+					</Typography>
+					<form className={classes.form} onSubmit={this.handleSubmit}>
+						<FormControl margin="normal" required fullWidth>
+							<InputLabel htmlFor="email">Username or Email</InputLabel>
+							<Input
+								id="usernameOrEmail"
+								name="usernameOrEmail"
+								autoComplete="signin email"
+								autoFocus
+								value={this.state.usernameOrEmail}
+								onChange={this.handleUsernameOrEmailChange}
+							/>
+						</FormControl>
+						<FormControl margin="normal" required fullWidth>
+							<InputLabel htmlFor="password">Password</InputLabel>
+							<Input
+								name="password"
+								type="password"
+								id="password"
+								autoComplete="signin current-password"
+								value={this.state.password}
+								onChange={this.handlePasswordChange}
+							/>
+						</FormControl>
+						{/* TODO add remember me with localStorage */}
+						<FormControlLabel
+							control={<Checkbox value="remember" color="primary" />}
+							label="Remember me"
 						/>
-					</FormControl>
-					<FormControl margin="normal" required fullWidth>
-						<InputLabel htmlFor="password">Password</InputLabel>
-						<Input
-							name="password"
-							type="password"
-							id="password"
-							autoComplete="signin current-password"
-							value={this.state.password}
-							onChange={this.handlePasswordChange}
-						/>
-					</FormControl>
-					{/* TODO add remember me with localStorage */}
-					<FormControlLabel
-						control={<Checkbox value="remember" color="primary" />}
-						label="Remember me"
-					/>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={classes.submit}
-					>
-						Sign in
-					</Button>
-				</form>
-			</Paper>
+						<Button
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+							className={classes.submit}
+						>
+							Sign in
+						</Button>
+					</form>
+				</Paper>
+			</div>
 		);
 	}
 }

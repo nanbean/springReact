@@ -3,16 +3,21 @@ import {
 } from './actionTypes';
 
 import {
+	getCurrentUserAction
+} from './userActions';
+
+import {
 	ACCESS_TOKEN
 } from '../constants';
 
-export const rehydrateAction = () => {
+export const rehydrateAction = () => dispatch => {
 	const payload = {};
 
 	if (typeof window === 'object') {
 		try {
 			const accessToken = localStorage.getItem(ACCESS_TOKEN);
 			payload.accessToken = accessToken;
+			dispatch(getCurrentUserAction());
 		} catch (err) {
 			// do nothing
 		}

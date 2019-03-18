@@ -34,12 +34,20 @@ const styles = theme => ({
 	},
 	cardGrid: {
 		padding: `${theme.spacing.unit * 8}px 0`
+	},
+	loadMoreContents: {
+		textAlign: 'center',
+		marginTop: 40
 	}
 });
 
 class ContentList extends Component {
 	componentDidMount () {
-		this.loadContentList();
+		const { contents } = this.props;
+
+		if (contents.length === 0) {
+			this.loadContentList();
+		}
 	}
 
 	componentDidUpdate (prevProps) {
@@ -52,7 +60,7 @@ class ContentList extends Component {
 		const { username } = this.props;
 
 		if (username) {
-			this.props.getUserCreatedContentsAction(username, page, size);
+			this.props.getUserCreatedContentsAction(username, page, 10);
 		}
 	}
 
@@ -88,17 +96,23 @@ class ContentList extends Component {
 							</Paper>
 						) : null
 					}
-					{
-						!fetching && !last ? (
-							<div className="load-more-contents">
-								<Button size="small" type="dashed" onClick={this.handleLoadMore}>Load more</Button>
-							</div>) : null
-					}
-					{
-						fetching ?
-							<LoadingIndicator /> : null
-					}
 				</Grid>
+				{
+					!fetching && !last ? (
+						<div className={classes.loadMoreContents}>
+							<Button
+								fullWidth
+								color="secondary"
+								onClick={this.handleLoadMore}
+							>
+								Load more
+							</Button>
+						</div>) : null
+				}
+				{
+					fetching ?
+						<LoadingIndicator /> : null
+				}
 			</div >
 		);
 	}
@@ -110,7 +124,6 @@ ContentList.propTypes = {
 	fetching: PropTypes.bool.isRequired,
 	getAllContentsAction: PropTypes.func.isRequired,
 	getUserCreatedContentsAction: PropTypes.func.isRequired,
-	isAuthenticated: PropTypes.bool.isRequired,
 	last: PropTypes.bool.isRequired,
 	page: PropTypes.number.isRequired,
 	size: PropTypes.number.isRequired,

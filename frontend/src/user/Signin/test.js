@@ -18,7 +18,7 @@ describe('Signin Test Cases', () => {
 	);
 
 	it('renders without crashing', () => {
-		expect(component.find('div.signin-container')).toHaveLength(1);
+		expect(component.find('#signin-container')).toHaveLength(1);
 	});
 
 	it('change state when status is 401', () => {

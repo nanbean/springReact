@@ -10,8 +10,6 @@ import {
 	signinAction
 } from '../../actions/signinoutActions';
 
-import './index.css';
-
 export class Signin extends Component {
 	state = {
 		snackBarOpen: false,
@@ -41,12 +39,10 @@ export class Signin extends Component {
 		}
 
 		return (
-			<div className="signin-container">
-				<div className="signin-content">
-					<SigninForm
-						signinAction={this.props.signinAction}
-					/>
-				</div>
+			<div id="signin-container">
+				<SigninForm
+					signinAction={this.props.signinAction}
+				/>
 				<SnackBar
 					open={snackBarOpen}
 					variant={variant}

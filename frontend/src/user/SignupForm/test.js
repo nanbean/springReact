@@ -6,7 +6,7 @@ import { SignupForm } from './index';
 
 configure({ adapter: new Adapter() });
 
-describe('SigninForm Test Cases', () => {
+describe('SignupForm Test Cases', () => {
 	const signupAction = jest.fn();
 	const component = mount(
 		<SignupForm
