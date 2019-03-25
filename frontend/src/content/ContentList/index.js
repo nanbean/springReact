@@ -60,7 +60,7 @@ class ContentList extends Component {
 		const { username } = this.props;
 
 		if (username) {
-			this.props.getUserCreatedContentsAction(username, page, 10);
+			this.props.getUserCreatedContentsAction(username, page, size);
 		}
 	}
 

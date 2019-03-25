@@ -10,8 +10,12 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 
-import { ACCESS_TOKEN } from '../../constants';
+import {
+	ACCESS_TOKEN
+} from '../../constants';
 
 import {
 	setAuthenticatedAction,
@@ -22,22 +26,47 @@ import {
 	logoutAction
 } from '../../actions/signinoutActions';
 
+import {
+	setDrawerOpenAction
+} from '../../actions/uiActions';
+
 import logo from '../../resources/images/logo.svg';
 
-const styles = {
+const styles = theme => ({
+	appBar: {
+		flexGrow: 1,
+		zIndex: theme.zIndex.drawer + 1,
+		transition: theme.transitions.create(['margin', 'width'], {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.leavingScreen
+		})
+	},
 	grow: {
 		flexGrow: 1
+	},
+	logo: {
+		width: 40,
+		verticalAlign: 'middle',
+		margin: 10
+	},
+	tagline: {
+		verticalAlign: 'middle'
 	},
 	link: {
 		textDecoration: 'none',
 		color: 'inherit'
 	}
-};
+});
 
 class AppHeader extends Component {
 	state = {
 		anchorEl: null
 	};
+
+	handleMenuIconClick = () => {
+		const { drawerOpen } = this.props;
+		this.props.setDrawerOpenAction(!drawerOpen);
+	}
 
 	handleMenu = event => {
 		this.setState({ anchorEl: event.currentTarget });
@@ -70,12 +99,6 @@ class AppHeader extends Component {
 
 		if (isAuthenticated) {
 			menuItems = [
-				<Link key="list" to="/list" className={classes.link}>
-					<Button color="inherit">List</Button>
-				</Link>,
-				<Link key="/content/new" to="/content/new" className={classes.link}>
-					<Button color="inherit">New</Button>
-				</Link>,
 				<Link key="/profile" to="/profile" className={classes.link}>
 					<Button color="inherit">Profile</Button>
 				</Link>,
@@ -95,11 +118,17 @@ class AppHeader extends Component {
 		}
 
 		return (
-			<AppBar position="static">
+			<AppBar
+				position="fixed"
+				className={classes.appBar}
+			>
 				<Toolbar>
+					<IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.handleMenuIconClick}>
+						<MenuIcon />
+					</IconButton>
 					<Typography variant="h6" color="inherit" className={classes.grow}>
 						<Link to="/" className={classes.link}>
-							<img width={20} src={logo} alt="" />
+							<img src={logo} alt="" className={classes.logo} />
 							<span className={classes.tagline}>LCMS</span>
 						</Link>
 					</Typography>
@@ -114,16 +143,19 @@ class AppHeader extends Component {
 
 AppHeader.propTypes = {
 	classes: PropTypes.object.isRequired,
+	drawerOpen: PropTypes.bool.isRequired,
 	history: PropTypes.shape({
 		push: PropTypes.func.isRequired
 	}).isRequired,
 	isAuthenticated: PropTypes.bool.isRequired,
 	logoutAction: PropTypes.func.isRequired,
 	setAuthenticatedAction: PropTypes.func.isRequired,
-	setCurrentUserAction: PropTypes.func.isRequired
+	setCurrentUserAction: PropTypes.func.isRequired,
+	setDrawerOpenAction: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
+	drawerOpen: state.ui.drawerOpen,
 	isAuthenticated: state.currentUser.isAuthenticated
 });
 
@@ -136,6 +168,9 @@ const mapDispatchToProps = dispatch => ({
 	},
 	setCurrentUserAction (value) {
 		dispatch(setCurrentUserAction(value));
+	},
+	setDrawerOpenAction (value) {
+		dispatch(setDrawerOpenAction(value));
 	}
 });
 

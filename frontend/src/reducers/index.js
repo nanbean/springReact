@@ -4,13 +4,15 @@ import currentUser from './currentUser';
 import signin from './signin';
 import newContent from './newContent';
 import signup from './signup';
+import ui from './ui';
 
 const lcms = combineReducers({
 	contents,
 	currentUser,
 	signin,
 	newContent,
-	signup
+	signup,
+	ui
 });
 
 export default lcms;
